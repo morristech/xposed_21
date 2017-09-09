@@ -6,6 +6,19 @@ MIRRDIR=/dev/magisk/mirror
 
 [ -f $DISABLE ] && exit
 
+IS22=false
+case $MODDIR in
+  *xposed_22* )
+    IS22=true
+    ;;
+esac
+
+mount -o rw,remount /
+ln -s $MODDIR/xposed.prop /xposed.prop
+mount -o ro,remount /
+
+! $IS22 && exit
+
 # Cleanup
 if [ -f $MODDIR/lists ]; then
   for dir in `cat $MODDIR/lists`; do
